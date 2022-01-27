@@ -1,0 +1,172 @@
+<html>
+<head>
+<title>HTML webpage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pushster&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/ml5@0.4.3/dist/ml5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.js"></script>
+
+   <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="full" style="padding-top:60px;padding-bottom: 360px;">
+<center>
+<h1 style="color:gold;">Hi</h1>
+<br>
+<h2 style="color:red;">My name is Devarsh Bajaj</h2>
+<br>
+<h3 style="color:purple;">I study in class 6</h3>
+<br>
+<h3 style="color:pink;">I study in HFS Powai</h3>
+<br>
+<font face="Bookman Old style" style="color:teal;">This is an image of our school</font>
+<br>
+<br>
+<img src="https://www.hiranandani.com/img/education/HFS-International-v3.jpg"
+<br>
+<h4 style="color:green;">This is my HTML webpage</h4>
+<br>
+<I style="color:silver">This is the I tag</I>
+<hr>
+<B style="color:teal">This is the B tag</B>
+<hr>
+<U style="color:white">This is an Image recognizer!</U>
+<hr>
+  <body>
+  <div class="container">
+    
+    <center>
+      <h3 class="btn btn-default heading">Image Recognition</h3>
+
+      <br><br>
+
+      <p  class="Pushter" style="font-size: 22px;">Model is trained to identify the following objects: </p>
+
+      <b class="objects">
+        Watch<hr>
+        Basketball<hr>
+        RGB Keyboard<hr>
+        Abacus<hr>
+      </b>
+
+      <br>
+
+      <label class="Pushter">Webcam View - </label>
+
+      <div id="webcam"></div>
+
+      <br><br>
+
+      <div id="result"></div>
+
+      <br><br>
+      <button onclick="TakeImage()" class="btn btn-info">Capture Image</button> 
+
+      <br><br>
+
+      <button onclick="Check()" class="btn btn-success">Identify Image</button>
+
+      <br><br>
+      <h3 style="font-size:22px";>Object <span id="ObjectNames">
+
+      </span></h3>
+
+      <h3 style="font-size: 22px;">Accuracy <span id="ObjectAccuracy">
+       </span></h3>
+
+    
+    </center>
+
+  </div>
+<h5 style="color:yellow;">Hope u liked it!</h5>
+<br>
+<h6 style="color:pink;">Bye!</h6>
+</center>
+</div>
+</body>
+<script>
+var div = document.getElementById("full");
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+function changeColor(){
+  div.style.backgroundColor= getRandomColor();
+}
+
+setInterval(changeColor,1000);
+
+
+
+
+Webcam.set({
+    height:350,
+    width:350,
+    image_format:'png',
+    png_quality:90
+}
+);
+
+camera = document.getElementById("webcam");
+Webcam.attach('#webcam');
+
+function TakeImage(){
+    Webcam.snap(function(data_uri){
+        document.getElementById("result").innerHTML = '<img id="A" src="'+data_uri+'"/>';
+    });
+
+}
+console.log('ml5 version', ml5.version);
+
+classifier = ml5.imageClassifier('https://teachablemachine.withgoogle.com/models/s1j5p5xz4/model.json',modelLoaded);
+
+function modelLoaded(){
+    console.log('Model Loaded!')
+}
+
+function Check(){
+    img = document.getElementById("A");
+    classifier.classify(img,gotResult);
+}
+
+function gotResult(error,results){
+    if(error){
+        console.error(error);
+    }
+    else{
+        console.log(results);
+        document.getElementById("ObjectNames").innerHTML = results[0].label;
+        document.getElementById("ObjectAccuracy").innerHTML = results[0].confidence.toFixed(3);
+    }
+}
+</script>
+<style>
+.Pushter{
+    font-family: 'Pushster', cursive;
+}
+.heading{
+    width:80%;
+    font-size:25px;
+}
+body{
+    font-family: 'Pushster', cursive;
+    background:repeating-radial-gradient( Red,orange,yellow,green,blue,indigo,violet);
+}
+#webcam{
+    border:2px dashed blue ;
+    width:350px;
+    height:300px;
+}
+</style>
+</html>
